@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+layout:decorate="~{layouts/application.html}">
+
+<head>
+  <title th:text="${article['title']}">Article title</title>
+</head>
+<section layout:fragment="content">
+  <!-- BEGIN -->
+  <div class="card">
+    <div class="card-body" th:object="${article}">
+      <h5 class="card-title" th:text="*{title}"></h5>
+      <p class="card-text" th:text="*{body}"></p>
+      <a th:href="@{/articles}" class="btn btn-light">Назад</a>
+    </div>
+  </div>
+  <!-- END -->
+</section>
