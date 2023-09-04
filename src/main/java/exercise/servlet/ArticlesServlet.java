@@ -62,9 +62,14 @@ public class ArticlesServlet extends HttpServlet {
                 1 : Integer.parseInt(request.getParameter("page"));
         int articlesCount = 0;
 
-        try (Connection connection = ConnectionPoolManager.getConnection()) {
-            PreparedStatement prepStatement = connection.prepareStatement(
-                    "SELECT id, title FROM articles ORDER BY id LIMIT 10 OFFSET ?");
+        final String paginatedQuery = "SELECT id, title FROM articles ORDER BY id LIMIT 10 OFFSET ?";
+        final String countArticlesQuery = "SELECT COUNT(*) FROM articles";
+
+        try (Connection connection = ConnectionPoolManager.getConnection();
+             PreparedStatement prepStatement = connection.prepareStatement(paginatedQuery);
+             Statement statement = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
+                     ResultSet.CONCUR_READ_ONLY)) {
+
             prepStatement.setInt(1, (currPage - 1) * 10);
             ResultSet rs = prepStatement.executeQuery();
 
@@ -74,9 +79,7 @@ public class ArticlesServlet extends HttpServlet {
                         "title", rs.getString("title")));
             }
 
-            Statement statement = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
-                    ResultSet.CONCUR_READ_ONLY);
-            ResultSet countRes = statement.executeQuery("SELECT COUNT(*) FROM articles");
+            ResultSet countRes = statement.executeQuery(countArticlesQuery);
             countRes.first();
             articlesCount = countRes.getInt(1);
         } catch (SQLException e) {
@@ -97,9 +100,11 @@ public class ArticlesServlet extends HttpServlet {
         int articleId = Integer.parseInt(request.getPathInfo().split("/")[1]);
         Map<String, String> article = new HashMap<>();
 
-        try (Connection connection = ConnectionPoolManager.getConnection()) {
-            PreparedStatement prepStatement = connection.prepareStatement(
-                    "SELECT title, body FROM articles WHERE id = ?");
+        final String showArticleQuery = "SELECT title, body FROM articles WHERE id = ?";
+
+        try (Connection connection = ConnectionPoolManager.getConnection();
+             PreparedStatement prepStatement = connection.prepareStatement(showArticleQuery)) {
+
             prepStatement.setInt(1, articleId);
             ResultSet rs = prepStatement.executeQuery();
 
@@ -111,7 +116,6 @@ public class ArticlesServlet extends HttpServlet {
             }
         } catch (SQLException e) {
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            e.printStackTrace();
         }
 
         request.setAttribute("article", article);
