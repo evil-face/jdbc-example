@@ -27,26 +27,34 @@ pipeline {
         }
 
         stage('Test') {
-                steps {
-                    echo "Running tests..."
-                    sh 'gradle test'
-                }
+			steps {
+				echo "Running tests..."
+				sh 'gradle test'
+			}
+		}
+
+		stage('Static scan') {
+			steps {
+				withSonarQubeEnv(installationName: 'sq1') {
+					echo "Running static code scans..."
+					sh 'gradle sonar'
+				}
+			}
         }
 
-        stage('Static scan') {
-                steps {
-                    withSonarQubeEnv(installationName: 'sq1') {
-                        echo "Running static code scans..."
-                        sh 'gradle sonarqube'
-                    }
-                }
+        stage('Quaility gate') {
+        	steps {
+        		timeout(time: 2, unit: 'MINUTES') {
+        			waitForQualityGate abortPipeline: true
+        		}
+        	}
         }
 
         stage('Build') {
-                steps {
-                    echo "Creating build..."
-                    sh 'gradle build'
-                }
+			steps {
+				echo "Creating build..."
+				sh 'gradle build'
+			}
         }
 
     }
