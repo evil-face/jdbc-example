@@ -18,6 +18,7 @@ public class ThymeleafConfig implements ServletContextListener {
     }
 
     public void contextDestroyed(ServletContextEvent sce) {
+        // doing nothing because interface asks for implementation
     }
 
     private TemplateEngine templateEngine(ServletContext servletContext) {
