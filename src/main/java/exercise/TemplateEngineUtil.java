@@ -2,7 +2,6 @@ package exercise;
 
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
-import javax.servlet.annotation.WebListener;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.ServletContext;
@@ -10,8 +9,11 @@ import javax.servlet.ServletException;
 import java.io.IOException;
 
 public class TemplateEngineUtil {
-
     private static final String TEMPLATE_ENGINE_ATTR = "thymeleaf";
+
+    private TemplateEngineUtil() {
+        throw new IllegalStateException("Utility class");
+    }
 
     public static void storeTemplateEngine(ServletContext context, TemplateEngine engine) {
         context.setAttribute(TEMPLATE_ENGINE_ATTR, engine);
@@ -24,7 +26,7 @@ public class TemplateEngineUtil {
     public static void render(String template,
                               HttpServletRequest request,
                               HttpServletResponse response)
-            throws IOException, ServletException {
+            throws IOException {
 
         TemplateEngine engine = TemplateEngineUtil.getTemplateEngine(request.getServletContext());
         WebContext context = new WebContext(request, response, request.getServletContext());
