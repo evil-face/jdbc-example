@@ -5,11 +5,13 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 public class ConnectionPoolManager {
-
     private static final String JDBC_URL =  System.getenv("JDBC_URL");
     private static final String JDBC_USER = System.getenv("JDBC_USER");
     private static final String JDBC_PASSWORD = System.getenv("JDBC_PASSWORD");
     private static final DataSource dataSource;
+    private ConnectionPoolManager() {
+        throw new IllegalStateException("Utility class");
+    }
 
     static {
         try {
