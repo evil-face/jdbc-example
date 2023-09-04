@@ -46,13 +46,10 @@ public class ArticlesServlet extends HttpServlet {
 
         String action = getAction(request);
 
-        switch (action) {
-            case "list":
-                showArticles(request, response);
-                break;
-            default:
-                showArticle(request, response);
-                break;
+        if (action.equals("list")) {
+            showArticles(request, response);
+        } else {
+            showArticle(request, response);
         }
     }
 
