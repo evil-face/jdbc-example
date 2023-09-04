@@ -56,7 +56,7 @@ public class EmbeddedTest {
     }
 
     @Test
-    public void testWelcomePage() throws IOException, ParseException {
+    void testWelcomePage() throws IOException, ParseException {
         CloseableHttpResponse response;
 
         try (CloseableHttpClient client = HttpClients.createDefault()) {
@@ -73,7 +73,7 @@ public class EmbeddedTest {
     }
 
     @Test
-    public void testArticleFirstPage() throws IOException, ParseException {
+    void testArticleFirstPage() throws IOException, ParseException {
         CloseableHttpResponse response;
 
         try (CloseableHttpClient client = HttpClients.createDefault()) {
@@ -91,7 +91,7 @@ public class EmbeddedTest {
     }
 
     @Test
-    public void testArticleSecondPage() throws IOException, ParseException {
+    void testArticleSecondPage() throws IOException, ParseException {
         CloseableHttpResponse response;
 
         try (CloseableHttpClient client = HttpClients.createDefault()) {
@@ -112,7 +112,7 @@ public class EmbeddedTest {
     }
 
     @Test
-    public void testShowArticlePage() throws IOException, ParseException {
+    void testShowArticlePage() throws IOException, ParseException {
         CloseableHttpResponse response;
 
         try (CloseableHttpClient client = HttpClients.createDefault()) {
@@ -129,7 +129,7 @@ public class EmbeddedTest {
     }
 
     @Test
-    public void testArticleNotFound() throws IOException, ParseException {
+    void testArticleNotFound() throws IOException, ParseException {
         CloseableHttpResponse response;
 
         try (CloseableHttpClient client = HttpClients.createDefault()) {
